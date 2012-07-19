@@ -1,78 +1,65 @@
 package com.prezerak.windmill.gui;
 
 
-import javax.swing.JFrame;
-import javax.swing.BoxLayout;
-import javax.swing.JPanel;
-
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.CardLayout;
-
-import javax.swing.JButton;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import com.prezerak.windmill.main.WindMill;
-import com.prezerak.windmill.model.Anemometer;
-import com.prezerak.windmill.model.Gust;
-import com.prezerak.windmill.model.High;
-import com.prezerak.windmill.model.Higher;
-import com.prezerak.windmill.util.Utilities;
-
-
-import javax.swing.BorderFactory;
-import javax.swing.ButtonGroup;
-import javax.swing.JOptionPane;
-import javax.swing.JRadioButton;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 import java.awt.Font;
-import javax.swing.border.LineBorder;
-import java.awt.Color;
-import javax.swing.border.TitledBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-
-import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
-import java.util.Arrays;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.Observable;
 import java.util.Observer;
-import java.awt.Component;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
+import javax.swing.SwingConstants;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
+import com.prezerak.windmill.main.WindMill;
+import com.prezerak.windmill.model.Anemometer;
+import com.prezerak.windmill.model.Gust;
+import com.prezerak.windmill.model.High;
+import com.prezerak.windmill.model.Higher;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
-
-import javax.swing.JSpinner;
-import javax.swing.JMenuBar;
-import java.awt.BorderLayout;
-import java.io.BufferedInputStream;
-
-import java.io.BufferedWriter;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-
-import java.io.OutputStreamWriter;
-
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import java.awt.Toolkit;
 
 @SuppressWarnings("serial")
 
@@ -80,7 +67,7 @@ import java.awt.Toolkit;
 public class MainFrame extends JFrame implements ActionListener, Observer {
 
 	private MainFrameModes MODE= MainFrameModes.REAL_TIME_MODE;
-	
+
 
 	private final ButtonGroup buttonGroupUnits = new ButtonGroup();
 	protected JRadioButton rdbtnKnots=null;
@@ -137,7 +124,7 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 	private MainWndAdapter wndAdapter;
 	private JPanel panelReport;
 	private JMenuItem mntmAbout;
-	
+
 	//private static seriesState avgPanelState;
 
 
@@ -148,49 +135,21 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 	public MainFrame() {
 
 
-		//String key = Utilities.getKey();
+		WindMill.database.initDB();
 
-		byte [] keyByte =  Utilities.getKey();
-		byte [] digestByte = new byte[keyByte.length];
-		BufferedInputStream in = null;
-
-		try {
-			in = new BufferedInputStream(new FileInputStream("license.key"));
-			in.read(digestByte);
-			in.close();
-		} catch (Exception e) {
-			JLabel lbl = new JLabel("Possible license violation !!!");
-			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			JOptionPane.showMessageDialog(null, lbl);
-			WindMill.database.terminateDB();	
-			System.exit(0);			
-		} 
-
-		try {
-			if (!Arrays.equals(keyByte, digestByte)) {
-				JLabel lbl = new JLabel("Possible license violation !!!");
-				lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-				JOptionPane.showMessageDialog(null, lbl);
-				System.exit(0);
-			}} catch (Exception e) {
-				
-			}
-
-			WindMill.database.initDB();
-
-			setFont(new Font("Tahoma", Font.PLAIN, 11));
-			initialize();	
-			pack();
-			setExtendedState(JFrame.MAXIMIZED_BOTH);
-			setVisible(true);
+		setFont(new Font("Tahoma", Font.PLAIN, 11));
+		initialize();	
+		pack();
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setVisible(true);
 
 
-			WindMill.anemometer = new Anemometer();		
-			WindMill.anemometer.addObserver(this);
-			WindMill.anemometer.addObserver(realTimePanel);
+		WindMill.anemometer = new Anemometer();		
+		WindMill.anemometer.addObserver(this);
+		WindMill.anemometer.addObserver(realTimePanel);
 
-			wndAdapter = new MainWndAdapter();
-			addWindowListener(wndAdapter);
+		wndAdapter = new MainWndAdapter();
+		addWindowListener(wndAdapter);
 	}
 
 	/**
@@ -594,7 +553,7 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 				btnGo.setEnabled(true);
 				return;
 			}
-			
+
 			if (endDate - startDate > 1000l*60*60*24*7) {
 				JLabel lbl = new JLabel("Time period is more than a week");
 				lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
@@ -613,10 +572,10 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 
 			JRadioButton btn = (JRadioButton) evt.getSource();
 			if (btn == this.rdbtnKmHr ||
-				btn == this.rdbtnMSec ||
-				btn == this.rdbtnBft ||
-				btn == this.rdbtnKnots ||
-				btn == this.rdbtnMilesHr) {
+					btn == this.rdbtnMSec ||
+					btn == this.rdbtnBft ||
+					btn == this.rdbtnKnots ||
+					btn == this.rdbtnMilesHr) {
 				if (MODE==MainFrameModes.REAL_TIME_MODE)//just call update
 					realTimePanel.update(WindMill.anemometer, null);
 				else if (MODE==MainFrameModes.AVG_MODE) 	
@@ -624,28 +583,28 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 			} else if (MODE==MainFrameModes.AVG_MODE){ //it's an averages button
 				avgPanel.update(); //this means a whole new chart based on averages but with same dates				
 			}
-			
+
 		}
 	}
 
 
 	private void enableTimeControls(boolean enabled) {
 		// TODO Auto-generated method stub
-		
+
 		dateChooserStart.setEnabled(enabled);		
 		dateChooserEnd.setEnabled(enabled);	
 		spinnerStartHrs.setEnabled(enabled);
 		spinnerEndHrs.setEnabled(enabled);
 		spinnerStartMins.setEnabled(enabled);
 		spinnerEndMins.setEnabled(enabled);
-		
+
 	}
 
 	ButtonGroup getAvgButtonGroup() {
 		// TODO Auto-generated method stub
 		return buttonGroupAvgs;
 	}
-	
+
 	ButtonGroup getUnitsButtonGroup() {
 		// TODO Auto-generated method stub
 		return this.buttonGroupUnits;
@@ -687,7 +646,7 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 		return buttonGroupUnits;
 	}
 
-	
+
 	void addToDisplayPanel() {
 		// TODO Auto-generated method stub
 		displayPanel.add(avgPanel, AVGPANEL);
@@ -696,7 +655,7 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 		MODE = MainFrameModes.AVG_MODE;
 
 	}
-	
+
 }
 
 @SuppressWarnings("serial")
@@ -773,9 +732,9 @@ class MyDateChooser extends JDateChooser {
 
 class MainWndAdapter extends WindowAdapter {
 	public void windowClosing(WindowEvent evt) {
-		
+
 		WindMill.anemometer.disconnect();
-		
+
 		if (WindMill.database!=null) {
 			if (Gust.getInstance().isOn()) 
 				WindMill.database.writeAlarm(Gust.getInstance().GUST, Gust.getInstance().getStartTime(), 
@@ -792,8 +751,9 @@ class MainWndAdapter extends WindowAdapter {
 			WindMill.database.terminateDB();	
 		}
 		try {
-			BufferedWriter bWriter = new BufferedWriter(
-					new OutputStreamWriter(new FileOutputStream(WindMill.databaseHome+"windmill.ini")));
+			
+				BufferedWriter bWriter = new BufferedWriter(
+					new OutputStreamWriter(new FileOutputStream(WindMill.iniPath)));
 			WindMill.propertyFile.store(bWriter, ".ini file");
 			bWriter.close();
 		} catch (Exception e) {

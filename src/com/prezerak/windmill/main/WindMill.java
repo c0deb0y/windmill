@@ -35,8 +35,12 @@ import com.prezerak.windmill.util.Utilities;
 public class WindMill {
 
 
-	final public static WindDB database = new WindDB();
-	final public static String databaseHome = "C:\\WindMill\\";
+
+	//final public static String databaseHome = "C:\\WindMill\\";
+	final public static String appHome = System.getProperty("user.home")+System.getProperty("file.separator")+"WindMill_GH_Runnable"+System.getProperty("file.separator");
+	final public static String databaseHome = appHome+"WindDB";
+	final private static String loggerPath = appHome+"logs"+System.getProperty("file.separator")+"windmill.log";
+	final public static String iniPath = appHome+System.getProperty("file.separator")+"windmill.ini";
 
 	public static MainFrame mainFrame;
 	public static Anemometer anemometer = null;
@@ -49,10 +53,10 @@ public class WindMill {
 	public static Properties propertyFile=null;
 
 	public static String version = "1.0";
-	
+
 	public static Logger logger = Logger.getLogger(WindMill.class);
 
-
+	public static WindDB database = null;
 
 	/**
 	 * Launch the application.
@@ -60,22 +64,25 @@ public class WindMill {
 
 
 	public static void main(String[] args) {
+
 		//Set ENGLISH locale so that time/date uses this format
 		Locale.setDefault(Locale.ENGLISH);
 
 		//Always use GMT
 		SimpleTimeZone.setDefault(SimpleTimeZone.getTimeZone("Europe/London"));
-	
+
 		//set the logger level programmatically		
-			
+
 		MySimpleLayout msl = new MySimpleLayout();
-		//d.setDateFormat("dd-MM-yy, hh:mm:ss", SimpleTimeZone.getDefault());
+
 		try {
-			logger.addAppender(new RollingFileAppender(msl,databaseHome+"windmill.log", true));
+			logger.addAppender(new RollingFileAppender(msl,loggerPath, true));
 		} catch (IOException e) {
 			logger.addAppender(new ConsoleAppender());
 		}
 		logger.setLevel(Level.INFO);
+		logger.debug(appHome);
+
 		//First check if the app is already running
 		if (Utilities.anotherInstanceExists()) {
 			JLabel lbl = new JLabel("Another instance of WindMill is already running...");
@@ -85,42 +92,44 @@ public class WindMill {
 			System.exit(0);
 		}
 
+		database = new WindDB();
 		//Then check if the database has been installed
 		if (Utilities.databaseMissing()) {			
+			/*
 			JLabel lbl = new JLabel("Database is missing !!!");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
 			logger.warn(lbl.getText());
 			JOptionPane.showMessageDialog(null, lbl);
 			System.exit(0);
+			 */
+			database.createDB();
 		}
+
 
 		//Load the properties file
 		//If not found then a message is shown but app continues with default values
 		BufferedReader bReader = null;
 
 		try {
+			propertyFile = new Properties();
 			//Load the properties
 			bReader = new BufferedReader(
-					new InputStreamReader(new FileInputStream(databaseHome+"windmill.ini")));
+					new InputStreamReader(new FileInputStream(iniPath)));
+			propertyFile.load(bReader);
+			bReader.close();
 		} catch (FileNotFoundException e) {
 			bReader=null;			
 			JLabel lbl = new JLabel("Initialization file missing !!!");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
 			logger.warn(lbl.getText());
 			JOptionPane.showMessageDialog(null, lbl);
-		} 
-
-		try {
-			propertyFile = new Properties();			
-			if (bReader !=null) {
-				propertyFile.load(bReader);
-				bReader.close();
-			}
+			initParams();
 		} catch (IOException e) {
 			JLabel lbl = new JLabel("Problem with initialization !!!");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
 			logger.warn(lbl.getText());
 			JOptionPane.showMessageDialog(null, lbl);
+			initParams();
 		} 
 
 
@@ -134,6 +143,37 @@ public class WindMill {
 				mainFrame = new MainFrame();
 			}
 		});
+	}
+
+	/**
+	 * 
+	 */
+	private static void initParams() {
+		// TODO Auto-generated method stub
+	
+		propertyFile.setProperty("SHIP", "Anonymous");
+		
+		propertyFile.setProperty("MODE", "TIMER_MODE");
+		propertyFile.setProperty("PORT", "COM1");
+		propertyFile.setProperty("BAUD", "9600");
+		propertyFile.setProperty("DATABITS", "8");
+		propertyFile.setProperty("STOPBITS", "1");
+		propertyFile.setProperty("PARITY", "NONE");
+		
+		propertyFile.setProperty("Gust.FLOOR", "1");
+		propertyFile.setProperty("Gust.CEILING", "12");
+		propertyFile.setProperty("Gust.DIFFERENCE", "3.5");
+		propertyFile.setProperty("Gust.TIMEWINDOW", "10");
+		
+		propertyFile.setProperty("High.TIMEWINDOW", "10");				
+		propertyFile.setProperty("High.FLOOR", "1");
+		propertyFile.setProperty("High.CEILING", "14.5");
+		propertyFile.setProperty("High.AVG", "10.0");
+		
+		propertyFile.setProperty("Higher.TIMEWINDOW", "10");
+		propertyFile.setProperty("Higher.FLOOR", "14.5");
+		propertyFile.setProperty("Higher.CEILING", "25");
+		propertyFile.setProperty("Higher.AVG", "15");
 	}
 }
 

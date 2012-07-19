@@ -2,16 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib-x86/derby.jar"/>
-	<classpathentry kind="lib" path="lib-x86/forms-1.3.0.jar"/>
-	<classpathentry kind="lib" path="lib-x86/jacob-1.15-M4-x86.dll"/>
-	<classpathentry kind="lib" path="lib-x86/jacob.jar"/>
-	<classpathentry kind="lib" path="lib-x86/jcalendar-1.3.3.jar"/>
-	<classpathentry kind="lib" path="lib-x86/jcommon-1.0.16.jar"/>
-	<classpathentry kind="lib" path="lib-x86/jfreechart-1.0.13.jar"/>
-	<classpathentry kind="lib" path="lib-x86/log4j-1.2.16.jar"/>
-	<classpathentry kind="lib" path="lib-x86/RXTXcomm.jar"/>
-	<classpathentry kind="lib" path="lib-x86/rxtxParallel.dll"/>
-	<classpathentry kind="lib" path="lib-x86/rxtxSerial.dll"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Other_Jars_x86"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
