@@ -124,16 +124,13 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 	private JMenuItem mntmAbout;
 	private JMenuItem mntmErase;
 
-	//private static seriesState avgPanelState;
-
-
 
 	/**
 	 * Create the application.
 	 */
 	public MainFrame() {
 
-
+		super();
 		WindMill.database.initDB();
 
 		setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -179,8 +176,6 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 		menuPanel = new JPanel();
 		menuPanel.setAlignmentY(Component.TOP_ALIGNMENT);
 		menuPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		//Component verticalStrut20 = Box.createVerticalStrut(20);
-		//panel.add(verticalStrut20, BorderLayout.NORTH);
 
 		menuBar = new JMenuBar();
 		menuBar.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -333,7 +328,6 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 		gc.set(gc.get(Calendar.YEAR), gc.get(Calendar.MONTH), gc.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
 		dateChooserStart.setDate(gc.getTime());
 		((JTextFieldDateEditor)dateChooserStart.getDateEditor()).addActionListener(sListener);
-		//System.out.println(dateChooserStart.getDate());
 		periodPanel.add(dateChooserStart, "3, 2, left, fill");
 
 
@@ -371,8 +365,6 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 		dateChooserEnd.setDate(gc.getTime());
 		((JTextFieldDateEditor)dateChooserEnd.getDateEditor()).addActionListener(sListener);
 		periodPanel.add(dateChooserEnd, "3, 6, left, fill");
-		//tf3.setEditable(false);
-		//tf3.setBackground(Color.white);
 
 		spinnerEndMins = new JSpinner(new RolloverSpinnerNumberModel(1, 0, 59,1));
 		spinnerEndMins.setEditor(new JSpinner.NumberEditor(spinnerEndMins,"00"));
@@ -706,7 +698,6 @@ class SpinnerListener implements ChangeListener, ActionListener {
 	}
 
 	private void activateGoBtn() {
-		//System.out.println("foo");
 		if ( WindMill.mainFrame.getMode() == MainFrameModes.AVG_MODE)
 			WindMill.mainFrame.btnGo().setEnabled(true); 	
 	}

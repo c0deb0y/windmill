@@ -11,7 +11,6 @@ import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
-import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import org.apache.log4j.ConsoleAppender;
@@ -69,7 +68,6 @@ public class WindMill {
 		TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
 
 		//set the logger level programmatically		
-
 		final MySimpleLayout msl = new MySimpleLayout();
 
 		try {
@@ -92,13 +90,6 @@ public class WindMill {
 		database = new WindDB();
 		//Then check if the database has been installed
 		if (Utilities.databaseMissing()) {			
-			/*
-			JLabel lbl = new JLabel("Database is missing !!!");
-			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			logger.warn(lbl.getText());
-			JOptionPane.showMessageDialog(null, lbl);
-			System.exit(0);
-			 */
 			database.createDB();
 		}
 

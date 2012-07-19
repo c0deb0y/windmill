@@ -121,13 +121,10 @@ public class OptionsDialog extends JDialog implements ActionListener {
 
 
 
-
+			//Add the tabbed pane to this panel.
 			add(tabbedPane);
 			//The following line enables to use scrolling tabs.
 			tabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
-			//Add the tabbed pane to this panel.
-
-
 		}
 
 		protected JComponent makeTextPanel(String text) {

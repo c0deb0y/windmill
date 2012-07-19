@@ -10,7 +10,6 @@ import java.awt.Graphics2D;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
@@ -151,7 +150,6 @@ public class ReportDialog extends JDialog implements ActionListener , Printable,
 			this.setVisible(false);
 		} else if (command.equals("Print")) {
 			table.isPrintable(true);
-			//print();
 			PrinterJob pj=PrinterJob.getPrinterJob();
 			pj.setPrintable(this);
 			table.isPrintable(true);
@@ -203,7 +201,6 @@ public class ReportDialog extends JDialog implements ActionListener , Printable,
 		Graphics2D pg2 = (Graphics2D) pg;
 		FontRenderContext frc = pg2.getFontRenderContext();
 		StringBuffer sb = new StringBuffer(WindMill.propertyFile.getProperty("SHIP"));
-		//sb.append(" wind data");
 		sb.append(" ");
 		sb.append(this.getTitle());
 		String bigTitle = sb.toString();
@@ -224,12 +221,12 @@ public class ReportDialog extends JDialog implements ActionListener , Printable,
 
 		int h = fm.getAscent();
 		y += h; // add ascent of header font because of baseline
-		// positioning (see figure 2.10)
+				// positioning 
 
 		int nRow, nCol;
 		for (nCol=0; nCol<nColumns; nCol++) {
 			TableColumn tk = colModel.getColumn(nCol);
-			int width = 100;//tk.getWidth();
+			int width = 100;
 			if (x[nCol] + width > wPage) {
 				nColumns = nCol;
 				break;
@@ -270,7 +267,6 @@ public class ReportDialog extends JDialog implements ActionListener , Printable,
 			}
 		}
 		pg.drawString("Page "+ (pageIndex+1), 300, hPage - rowH);
-		//System.gc();
 		return PAGE_EXISTS;
 	}
 

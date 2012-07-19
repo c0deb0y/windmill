@@ -42,6 +42,5 @@ public class WaitDialog extends JDialog {
 			lblPleaseWait.setHorizontalAlignment(SwingConstants.CENTER);
 			contentPanel.add(lblPleaseWait);
 		}
-		//addWindowListener(new WaitDialogAdapter());
 	}
 }

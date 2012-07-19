@@ -5,7 +5,6 @@ import java.sql.SQLException;
 
 import java.util.Formatter;
 import java.util.GregorianCalendar;
-import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 
@@ -49,7 +48,6 @@ public class ReportTable extends JTable  {
 
 	boolean previous() {
 		if (m.currentPage > 0) {
-			//System.out.println((m.currentPage++)+"----"+m.pages);
 			m.currentPage--;
 			m.pageLength=60;
 			m.fireTableDataChanged();
@@ -76,13 +74,10 @@ public class ReportTable extends JTable  {
 	private class MyTableModel extends AbstractTableModel {
 		private String[] columnNames = {"Speed", "Direction", "Time", "Relevance", "Alarms"};
 		private Object[][] data = null;
-		//private TimeSeries datasetVel = null;
-		//private TimeSeries datasetDir = null;
 		private long currentPage;
 		private int pageLength;
 		private float pages;
 		private boolean isPrintable;
-		//private String units = null;
 		private short columnCount;
 
 		MyTableModel(TimeSeries datasetVel, TimeSeries datasetDir, String units, 
@@ -142,9 +137,6 @@ public class ReportTable extends JTable  {
 					calendar.setTimeInMillis(datasetVel.getTimePeriod(i).getLastMillisecond());
 					formatter.format("%1$tH:%1$tM:%1$tS %1$tb %1$te,%1$tY", calendar);	
 					data[i][2]= sb.toString();
-
-					//data[i][3]= "test";
-
 				}
 
 				sb1.delete(0, sb1.length());
@@ -182,14 +174,12 @@ public class ReportTable extends JTable  {
 
 		@Override
 		public int getColumnCount() {
-			//return columnNames.length;
 			return columnCount;
 		}
 
 		@Override
 		public int getRowCount() {
 			if (isPrintable) {
-				//System.out.println("data:"+data.length);
 				return data.length;
 			}
 			else

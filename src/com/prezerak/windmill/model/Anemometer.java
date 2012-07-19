@@ -28,7 +28,7 @@ import com.prezerak.windmill.main.WindMill;
 
 public class Anemometer extends Observable implements SerialPortEventListener {
 
-	private Timer pollingTimer=null;// = new Timer();
+	private Timer pollingTimer=null;
 	private int pollingTimerPeriod = 1; //seconds
 
 	public static final int TIMER_MODE=0;
@@ -278,18 +278,6 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 		w.direction = (float) Math.random()*360.0f;
 		w.reference = 'R';
 		w.vel = (float) Math.random()*30.0f;
-		/*
-		 * For debugging purposes only
-		if (periods <= 60)
-			w.vel = 10.0f;
-		else if (periods >60 && periods <=120)
-			w.vel = 10.0f;
-		else if (periods >120 && periods <=180)
-			w.vel = 1.0f;
-		else if (periods >180 && periods <=240)
-			w.vel = 10.0f;
-		else
-			w.vel = 1.0f;*/
 		w.units = 'M';
 		w.timeMills = System.currentTimeMillis();
 
@@ -349,40 +337,29 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 	private boolean populateWind(String s) {
 
 		String [] tokens = s.split(",");
-		/*
-		if (!tokens[0].equals(WindMill.propertyFile.getProperty("EMEA_PHRASE", "$IIMWV"))) {
-			System.out.println("Invalid phrase !!!"+tokens[0]);
-			w.direction = 0.0f;
-			w.reference = 'R';
-			w.vel = 0.0f;
-			w.units = 'N';
-			w.timeMills = System.currentTimeMillis();
-			return false;
-		} else {
-		*/
-			//$IIMWV,000,R,0.0,M,V*37
-			w.direction = Float.parseFloat(tokens[1]);
-			if (w.direction > 360.0)
-				w.direction -= 360.0;
-			else if (w.direction < 0)
-				w.direction+=360.0;
-			w.reference = tokens[2].charAt(0);
-			w.vel = Float.parseFloat(tokens[3]);
-			w.units = tokens[4].charAt(0);
-			w.timeMills = System.currentTimeMillis();
-			//always convert velocity to meters
-			switch (w.units) {
-			case 'M': //meters per second - TESTED
-				//do nothing
-				break;
+		//$IIMWV,000,R,0.0,M,V*37
+		w.direction = Float.parseFloat(tokens[1]);
+		if (w.direction > 360.0)
+			w.direction -= 360.0;
+		else if (w.direction < 0)
+			w.direction+=360.0;
+		w.reference = tokens[2].charAt(0);
+		w.vel = Float.parseFloat(tokens[3]);
+		w.units = tokens[4].charAt(0);
+		w.timeMills = System.currentTimeMillis();
+		//always convert velocity to meters
+		switch (w.units) {
+		case 'M': //meters per second - TESTED
+			//do nothing
+			break;
 
-			case 'N': //knots - TESTED
-				w.vel = w.vel*WindMill.KNOTS_TO_METERS_CONV_FACTOR;
-				break;
-			case 'K': //km/hr ?
-				w.vel = w.vel*WindMill.KM_PER_HR_TO_METERS_CONV_FACOR;
-				break;
-			}
+		case 'N': //knots - TESTED
+			w.vel = w.vel*WindMill.KNOTS_TO_METERS_CONV_FACTOR;
+			break;
+		case 'K': //km/hr ?
+			w.vel = w.vel*WindMill.KM_PER_HR_TO_METERS_CONV_FACOR;
+			break;
+		}
 
 		//}
 		return true;

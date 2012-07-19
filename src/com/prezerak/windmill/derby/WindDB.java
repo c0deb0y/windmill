@@ -22,7 +22,7 @@ import com.prezerak.windmill.util.Utilities;
 public class WindDB  {
 
 
-	String protocol = "jdbc:derby:";
+	final String protocol = "jdbc:derby:";
 
     
 	final String userName="c0deb0y";
