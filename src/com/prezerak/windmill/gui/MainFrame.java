@@ -124,6 +124,7 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 	private MainWndAdapter wndAdapter;
 	private JPanel panelReport;
 	private JMenuItem mntmAbout;
+	private JMenuItem mntmErase;
 
 	//private static seriesState avgPanelState;
 
@@ -205,15 +206,24 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 		mntmOptions_1.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		mnMenu.add(mntmOptions_1);
 
-		mntmExit = new JMenuItem("Exit");
-		mntmExit.setActionCommand("Exit");
-		mntmExit.addActionListener(this);
 
 		mntmAbout = new JMenuItem("About");
 		mntmAbout.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		mntmAbout.setActionCommand("About");
 		mntmAbout.addActionListener(this);
 		mnMenu.add(mntmAbout);
+		
+		
+		mntmErase = new JMenuItem("Erase DB");
+		mntmErase.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		mntmErase.setActionCommand("Erase");
+		mntmErase.addActionListener(this);
+		mnMenu.add(mntmErase);
+
+		
+		mntmExit = new JMenuItem("Exit");
+		mntmExit.setActionCommand("Exit");
+		mntmExit.addActionListener(this);
 		mntmExit.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		mnMenu.add(mntmExit);
 		menuBar.add(mnMenu, BorderLayout.CENTER);
