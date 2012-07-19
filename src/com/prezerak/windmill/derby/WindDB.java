@@ -23,12 +23,12 @@ public class WindDB  {
 
 
 	String protocol = "jdbc:derby:";
-    private String driver = "org.apache.derby.jdbc.EmbeddedDriver";
+
     
 	final String userName="c0deb0y";
 	final String passwd = "!@#$%^&*";
 	final String bootpasswd="1itt131amb";
-	final String dbName = WindMill.databaseHome;
+	final String dbName = WindMill.DBPATH;
 
 
 	final private String windTable = "wind_data";
@@ -44,6 +44,9 @@ public class WindDB  {
 	private PreparedStatement psSelect= null;
 	private PreparedStatement psSelectAvg= null;
 	private PreparedStatement psSelectMinVel= null;
+	private PreparedStatement psEraseAllWindData= null;
+	private PreparedStatement psEraseAllAlarmData= null;
+
 
 
 	public void createDB() {
@@ -101,7 +104,7 @@ public class WindDB  {
 					+ ";create=true;dataEncryption=true;bootPassword="+bootpasswd, props);
 
 			//System.out.println("Connected to and created database " + dbName);
-			WindMill.logger.debug("Connected to and created database " + dbName);
+			WindMill.LOGGER.debug("Connected to and created database " + dbName);
 
 			// We want to control transactions manually. Autocommit is on by
 			// default in JDBC.
@@ -110,20 +113,20 @@ public class WindDB  {
 			 * SQL statements commands against the database.*/
 			s = conn.createStatement();
 			statements.add(s);
-			String setProperty = 
+			final String setProperty = 
 				"CALL SYSCS_UTIL.SYSCS_SET_DATABASE_PROPERTY(";
-			String requireAuth = "'derby.connection.requireAuthentication'";
-			String sqlAuthorization = "'derby.database.sqlAuthorization'";
-			String defaultConnMode =
+			final String requireAuth = "'derby.connection.requireAuthentication'";
+			final String sqlAuthorization = "'derby.database.sqlAuthorization'";
+			final String defaultConnMode =
 				"'derby.database.defaultConnectionMode'";
-			String fullAccessUsers = "'derby.database.fullAccessUsers'";
-			String provider = "'derby.authentication.provider'";
-			String propertiesOnly = "'derby.database.propertiesOnly'";
-			String home = "'derby.system.home'";
+			final String fullAccessUsers = "'derby.database.fullAccessUsers'";
+			final String provider = "'derby.authentication.provider'";
+			final String propertiesOnly = "'derby.database.propertiesOnly'";
+			final String home = "'derby.system.home'";
 
 
 
-			s.executeUpdate(setProperty + home + ", '"+WindMill.databaseHome+"')");
+			s.executeUpdate(setProperty + home + ", '"+WindMill.DBPATH+"')");
 			// Set requireAuthentication
 			s.executeUpdate(setProperty + requireAuth + ", 'true')");
 			// Set sqlAuthorization
@@ -148,16 +151,16 @@ public class WindDB  {
 			s.execute("create table wind_data(vel FLOAT, dir FLOAT, timeMills BIGINT, reference CHAR, gust BOOLEAN, high BOOLEAN, higher BOOLEAN)");            
 			s.execute("CREATE UNIQUE INDEX time ON wind_data (timeMills ASC)");
 			//System.out.println("Created table wind_data");
-			WindMill.logger.info("Created table wind_data");
+			WindMill.LOGGER.info("Created table wind_data");
 			conn.commit();
-			WindMill.logger.info("Committed the transaction");
+			WindMill.LOGGER.info("Committed the transaction");
 			s.execute("create table alarms(type SMALLINT, startTime BIGINT, endTime BIGINT)");
 			s.execute("CREATE INDEX time2 ON alarms(startTime, endTime ASC)");
 			//System.out.println("Created table alarms");
-			WindMill.logger.info("Created table alarms");
+			WindMill.LOGGER.info("Created table alarms");
 			conn.commit();
 			//System.out.println("Committed the transaction");
-			WindMill.logger.info("Committed the transaction");
+			WindMill.LOGGER.info("Committed the transaction");
 
 			/*
 			 * In embedded mode, an application should shut down the database.
@@ -193,13 +196,13 @@ public class WindDB  {
 				if (( (se.getErrorCode() == 50000)
 						&& ("XJ015".equals(se.getSQLState()) ))) {
 					// we got the expected exception
-					WindMill.logger.info("Derby shut down normally");
+					WindMill.LOGGER.info("Derby shut down normally");
 					// Note that for single database shutdown, the expected
 					// SQL state is "08006", and the error code is 45000.
 				} else {
 					// if the error code or SQLState is different, we have
 					// an unexpected exception (shutdown failed)
-					WindMill.logger.info("Derby did not shut down normally");
+					WindMill.LOGGER.info("Derby did not shut down normally");
 					Utilities.printSQLException(se);
 				}
 			}
@@ -222,10 +225,10 @@ public class WindDB  {
 			}
 
 			// Statements and PreparedStatements
-			int i = 0;
+			int stmnt_index = 0;
 			while (!statements.isEmpty()) {
 				// PreparedStatement extend Statement
-				Statement st = (Statement)statements.remove(i);
+				Statement st = (Statement)statements.remove(stmnt_index);
 				try {
 					if (st != null) {
 						st.close();
@@ -248,43 +251,8 @@ public class WindDB  {
 		}
 	}
 
-    private void loadDriver() {
-        /*
-         *  The JDBC driver is loaded by loading its class.
-         *  If you are using JDBC 4.0 (Java SE 6) or newer, JDBC drivers may
-         *  be automatically loaded, making this code optional.
-         *
-         *  In an embedded environment, this will also start up the Derby
-         *  engine (though not any databases), since it is not already
-         *  running. In a client environment, the Derby engine is being run
-         *  by the network server framework.
-         *
-         *  In an embedded environment, any static Derby system properties
-         *  must be set before loading the driver to take effect.
-         */
-        try {
-            Class.forName(driver);//.newInstance();
-            WindMill.logger.info("Loaded the appropriate driver");
-        } catch (ClassNotFoundException cnfe) {
-        	WindMill.logger.error("\nUnable to load the JDBC driver " + driver);
-        	WindMill.logger.error("Please check your CLASSPATH.");
-            cnfe.printStackTrace(System.err);
-        } /*catch (InstantiationException ie) {
-        	WindMill.logger.error(
-                        "\nUnable to instantiate the JDBC driver " + driver);
-            ie.printStackTrace(System.err);
-        } catch (IllegalAccessException iae) {
-        	WindMill.logger.error(
-                        "\nNot allowed to access the JDBC driver " + driver);
-            iae.printStackTrace(System.err);
-        }*/
-    }
-
-
-public void initDB() {
-
-	Properties p = System.getProperties();
-	p.put("derby.system.home", WindMill.databaseHome);
+ public void initDB() {
+	System.getProperties().put("derby.system.home", WindMill.DBPATH);
 
 	//loadDriver();
 
@@ -294,17 +262,17 @@ public void initDB() {
 	props.put("user", userName);
 	props.put("password", passwd);
 
-	StringBuffer connectionProperties = new StringBuffer(protocol);
-	connectionProperties.append(dbName);
-	connectionProperties.append(";bootPassword=");
-	connectionProperties.append(bootpasswd);
-	connectionProperties.append(";");
+	StringBuffer connPriorities = new StringBuffer(protocol);
+	connPriorities.append(dbName);
+	connPriorities.append(";bootPassword=");
+	connPriorities.append(bootpasswd);
+	connPriorities.append(";");
 	try {
 		//loadDriver();
-		conn = DriverManager.getConnection(connectionProperties.toString(), props);
+		conn = DriverManager.getConnection(connPriorities.toString(), props);
 		//here we might get an exception because the db does not exist
 		//we should handle this otherwise the program freezes
-		WindMill.logger.info("Connected to database " + dbName);
+		WindMill.LOGGER.info("Connected to database " + dbName);
 
 		// We want to control transactions manually. Autocommit is on by
 		// default in JDBC.
@@ -317,6 +285,8 @@ public void initDB() {
 		psSelectMinVel = conn.prepareStatement("SELECT MIN(vel) FROM WIND_DATA WHERE timeMills >= ? AND timeMills <= ?", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		psSelectAlarm = conn.prepareStatement("SELECT startTime, endTime FROM alarms WHERE type = ? AND (endTime >= ? AND endTime <= ?) ORDER BY startTime ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
 		psSelectAllAlarms = conn.prepareStatement("SELECT * FROM alarms WHERE endTime >= ? AND endTime <= ? ORDER BY startTime ASC", ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+		psEraseAllWindData = conn.prepareStatement("DELETE FROM WIND_DATA");
+		psEraseAllAlarmData = conn.prepareStatement("DELETE FROM alarms");
 	} catch (SQLException e) {
 		Utilities.printSQLException(e);
 	}
@@ -333,13 +303,13 @@ public void terminateDB() {
 		if (( (se.getErrorCode() == 50000)
 				&& ("XJ015".equals(se.getSQLState()) ))) {
 			// we got the expected exception
-			WindMill.logger.info("Derby shut down normally");
+			WindMill.LOGGER.info("Derby shut down normally");
 			// Note that for single database shutdown, the expected
 			// SQL state is "08006", and the error code is 45000.
 		} else {
 			// if the error code or SQLState is different, we have
 			// an unexpected exception (shutdown failed)
-			WindMill.logger.warn("Derby did not shut down normally");
+			WindMill.LOGGER.warn("Derby did not shut down normally");
 			Utilities.printSQLException(se);
 		}
 	} finally {
@@ -348,40 +318,40 @@ public void terminateDB() {
 
 		// Statements and PreparedStatements
 		try {	
-			if (psInsert != null)
+			if (psInsert != null) {
 				psInsert.close();
-			if (  psInsertAlarm != null)
+			}
+			
+			if (psInsertAlarm != null){
 				psInsertAlarm.close();
-			if (  psSelectAlarm != null)
+			}
+			
+			if (psSelectAlarm != null){
 				psSelectAlarm.close();
-			if (  psSelectAllAlarms != null)
+			}
+			if (psSelectAllAlarms != null) {
 				psSelectAllAlarms.close();
-			if (  psSelectAll != null)
+			}
+			
+			if (psSelectAll != null) {
 				psSelectAll.close();
-			if (  psSelect != null)
+			}
+			
+			if (psSelect != null) {
 				psSelect.close();
-			if (  psSelectAvg != null)
+			}
+			
+			if (psSelectAvg != null) {
 				psSelectAvg.close();
-			if (  psSelectMinVel != null)
+			}
+			
+			if (psSelectMinVel != null) {
 				psSelectMinVel.close();
+			}
 
 		} catch (SQLException sqle) {
-
 			Utilities.printSQLException(sqle);
 		}
-		//ResultSet
-		/*
-			try {
-				if (rs !=null) {
-					if (!rs.isClosed()) {
-						conn.close();
-						rs = null;
-					}
-				}
-			} catch (SQLException sqle) {
-				Utilities.printSQLException(sqle);
-			}
-		 */
 
 		//Connection
 		try {
@@ -395,11 +365,11 @@ public void terminateDB() {
 			Utilities.printSQLException(sqle);
 		}
 	}
-	WindMill.logger.info("Database connection terminated");
+	WindMill.LOGGER.info("Database connection terminated");
 }
 
 
-public void writeWind(Anemometer anemometer) {
+public void writeWind(final Anemometer anemometer) {
 
 	Wind w =  anemometer.getW();
 
@@ -421,7 +391,7 @@ public void writeWind(Anemometer anemometer) {
 	}
 }
 
-public ResultSet queryAllAlarms(long startTime, long endTime) {
+public ResultSet queryAllAlarms(final long startTime, final long endTime) {
 
 	ResultSet rs = null;
 
@@ -452,7 +422,7 @@ public ResultSet queryAlarm(short alarmCode, long startTime, long endTime) {
 	return rs;
 }
 
-public void writeAlarm(short alarmCode, long startTime, long endTime) {
+public void writeAlarm(final short alarmCode, final long startTime, final long endTime) {
 
 	try {  
 		psInsertAlarm.setShort(1, alarmCode);
@@ -467,7 +437,7 @@ public void writeAlarm(short alarmCode, long startTime, long endTime) {
 }
 
 
-public ResultSet QueryRecordsInTimePeriod(long startTime, long endTime) {
+public ResultSet queryRecordsInTimePeriod(final long startTime, final long endTime) {
 
 	ResultSet rs = null;
 
@@ -482,7 +452,7 @@ public ResultSet QueryRecordsInTimePeriod(long startTime, long endTime) {
 }
 
 
-public ResultSet QueryAVGRecordsInTimePeriod(long startTime, long endTime) {
+public ResultSet queryAVGRecordsInTimePeriod(final long startTime, final long endTime) {
 
 	ResultSet rs = null;
 
@@ -496,7 +466,7 @@ public ResultSet QueryAVGRecordsInTimePeriod(long startTime, long endTime) {
 	return rs;
 }
 
-public ResultSet QueryMinimumVelInTimePeriod(long startTime, long endTime) {
+public ResultSet queryMinimumVelInTimePeriod(final long startTime, final long endTime) {
 
 	ResultSet rs = null;
 
@@ -509,6 +479,20 @@ public ResultSet QueryMinimumVelInTimePeriod(long startTime, long endTime) {
 		com.prezerak.windmill.util.Utilities.printSQLException(e);
 	}
 	return rs;
+}
+
+/**
+ * 
+ */
+public void eraseDB() {
+	// TODO Auto-generated method stub
+	try {
+		psEraseAllWindData.execute();
+		psEraseAllAlarmData.execute();
+	} 		catch (SQLException e) {
+		com.prezerak.windmill.util.Utilities.printSQLException(e);
+	}
+	
 }
 
 }

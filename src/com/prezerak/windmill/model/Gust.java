@@ -2,12 +2,12 @@ package com.prezerak.windmill.model;
 
 import com.prezerak.windmill.main.WindMill;
 
-public class Gust {
+public final class Gust {
 	private float DIFFERENCE; // m/sec
 	private long TIMEWINDOW; //ms
 	final public short GUST=1;
 
-	private boolean isOn = false;
+	private boolean on = false;
 
 	private long startTime=0;
 	private long endTime=0;
@@ -61,11 +61,11 @@ public class Gust {
 	}
 
 	public boolean isOn() {
-		return isOn;
+		return on;
 	}
 
-	public synchronized void setOn(boolean isOn) {
-		this.isOn = isOn;
+	public synchronized void setOn(boolean on) {
+		this.on = on;
 	}
 
 	public synchronized long getStartTime() {

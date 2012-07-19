@@ -300,7 +300,7 @@ public class AveragesPanel extends JPanel implements ActionListener, ItemListene
 		else
 			v = new RegularVelocity(conversionFactor);
 
-		rsVelDir = WindMill.database.QueryRecordsInTimePeriod(startDate, endDate);
+		rsVelDir = WindMill.database.queryRecordsInTimePeriod(startDate, endDate);
 		//In case of no values
 		try {
 			rsVelDir.beforeFirst();
@@ -635,7 +635,7 @@ public class AveragesPanel extends JPanel implements ActionListener, ItemListene
 				highRenderer.setSeriesVisible(0, false);
 
 		} catch (OutOfMemoryError e) {
-			WindMill.logger.warn("Out of Memory in plotEverything");
+			WindMill.LOGGER.warn("Out of Memory in plotEverything");
 		}
 
 	}
@@ -648,15 +648,15 @@ public class AveragesPanel extends JPanel implements ActionListener, ItemListene
 			conversionFactor=1.0f;
 			maxY=50.0f;
 		} else if (WindMill.mainFrame.rdbtnKmHr.isSelected()) {
-			conversionFactor=1/WindMill.KmPerHrToMetersConvFactor;
+			conversionFactor=1/WindMill.KM_TO_METERS;
 			maxY=150.0f;
 		}
 		else if (WindMill.mainFrame.rdbtnMilesHr.isSelected()) {
-			conversionFactor= 1/WindMill.milesPerHrToMetersConvFactor;
+			conversionFactor= 1/WindMill.MILES_TO_METERS;
 			maxY=150.0f;
 		}
 		else if (WindMill.mainFrame.rdbtnKnots.isSelected()) {
-			conversionFactor=1/WindMill.knotsToMetersConvFactor;;
+			conversionFactor=1/WindMill.KNOTS_TO_METERS;;
 			maxY=150.0f;
 		}
 		else if (WindMill.mainFrame.rdbtnBft.isSelected()) {

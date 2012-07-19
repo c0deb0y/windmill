@@ -31,9 +31,9 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 	private Timer pollingTimer=null;// = new Timer();
 	private int pollingTimerPeriod = 1; //seconds
 
-	public static short TIMER_MODE=0;
-	public static short REAL_MODE=1;
-	public static short MODE = 0;
+	public static final int TIMER_MODE=0;
+	public static final int REAL_MODE=1;
+	public static int mode = TIMER_MODE;
 
 	public SerialPort serialPort = null;
 	public SerialPort getSerialPort() {
@@ -47,22 +47,23 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 	private byte[] buffer = new byte[1024];
 	private Wind w = null;
 
-	ResultSet rsAlarms=null;
+	private ResultSet rsAlarms=null;
 
 
 	public Anemometer() {
+		super();
 		w = new Wind();
-		String mode = WindMill.propertyFile.getProperty("MODE", "REAL_MODE");
-		if (mode.equals("TIMER_MODE"))
-			MODE = TIMER_MODE;
-		else if (mode.equals("REAL_MODE"))
-			MODE = REAL_MODE;
+		String modeParam = WindMill.propertyFile.getProperty("MODE", "REAL_MODE");
+		if (modeParam.equals("TIMER_MODE"))
+			mode = TIMER_MODE;
+		else if (modeParam.equals("REAL_MODE"))
+			mode = REAL_MODE;
 
 
-		if (MODE == TIMER_MODE) {
+		if (mode == TIMER_MODE) {
 			pollingTimer=new Timer();
 			pollingTimer.scheduleAtFixedRate(new WindTimerTask(this), 0, 1000*pollingTimerPeriod);
-		} else if (MODE == REAL_MODE) {
+		} else if (mode == REAL_MODE) {
 			//connect
 			connect(WindMill.propertyFile.getProperty("PORT", "COM1"));
 		}
@@ -116,7 +117,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 			{
 				JLabel lbl = new JLabel("Error: Port is currently in use");
 				lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-				WindMill.logger.warn(lbl.getText());
+				WindMill.LOGGER.warn(lbl.getText());
 				JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 			}
 			else
@@ -211,51 +212,51 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 					//OutputStream out = serialPort.getOutputStream();
 					//(new Thread(new SerialWriter(out))).start();
 
-					WindMill.logger.info(portName+" connected");
+					WindMill.LOGGER.info(portName+" connected");
 				}
 				else
 				{
-					WindMill.logger.warn("Error: Only serial ports are handled by this app.");
+					WindMill.LOGGER.warn("Error: Only serial ports are handled by this app.");
 				}
 			}   //otherwise shallow some exceptions
 		} catch (NoSuchPortException e) {
 			JLabel lbl = new JLabel(portName+" does not exist");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.logger.warn(lbl.getText());
+			WindMill.LOGGER.warn(lbl.getText());
 			JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 		} catch (PortInUseException e) {			
 			JLabel lbl = new JLabel("Error: Port is currently in use");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.logger.warn(lbl.getText());
+			WindMill.LOGGER.warn(lbl.getText());
 			JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 			//disconnect();
 		} catch(UnsupportedCommOperationException e) {			
 			JLabel lbl = new JLabel("Unsupported "+portName+" parameter");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.logger.warn(lbl.getText());
+			WindMill.LOGGER.warn(lbl.getText());
 			JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 		} catch (TooManyListenersException e) {
 			JLabel lbl = new JLabel("Too many serial listeners");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.logger.warn(lbl.getText());
+			WindMill.LOGGER.warn(lbl.getText());
 			JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 		} catch (IOException e) {
 			JLabel lbl = new JLabel("IO Error");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.logger.warn(lbl.getText());
+			WindMill.LOGGER.warn(lbl.getText());
 			JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 		} catch (Exception e) {
 			JLabel lbl = new JLabel("General Exception");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.logger.warn(lbl.getText());
+			WindMill.LOGGER.warn(lbl.getText());
 			JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 		}
 	}
 
 	public void disconnect () {
-		if (MODE == TIMER_MODE) 
+		if (mode == TIMER_MODE) 
 			pollingTimer.cancel();
-		else if (MODE == REAL_MODE) {
+		else if (mode == REAL_MODE) {
 			if (serialPort==null) return;
 			try {
 				if (in !=null) in.close();
@@ -266,7 +267,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 
 			serialPort.close();
 		}	
-		WindMill.logger.info("serial port disconnected");
+		WindMill.LOGGER.info("serial port disconnected");
 	}
 
 
@@ -298,10 +299,10 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 			break;
 		case 'N':
 			//convert knots to m / sec
-			w.vel = WindMill.knotsToMetersConvFactor*w.vel;
+			w.vel = WindMill.KNOTS_TO_METERS*w.vel;
 		case 'K':
 			//convert km /hr to m/sec
-			w.vel = WindMill.KmPerHrToMetersConvFactor*w.vel;
+			w.vel = WindMill.KM_TO_METERS*w.vel;
 		}
 
 		//This way, wind always carries velocity in m/sec
@@ -329,7 +330,6 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 			}
 			//$IIMWV,000,R,0.0,M,V*37
 			String s = new String(buffer,0,len);
-			System.out.println("From serial:"+s);
 			if (populateWind(s)) {
 				checkForAlarms();
 				WindMill.database.writeWind(this);
@@ -341,7 +341,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 		{
 			//e.printStackTrace();
 			//System.exit(-1);
-			WindMill.logger.warn("IO exception while reading serial port");
+			WindMill.LOGGER.warn("IO exception while reading serial port");
 		}             
 	}
 
@@ -376,10 +376,10 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 				break;
 
 			case 'N': //knots - TESTED
-				w.vel = w.vel*WindMill.knotsToMetersConvFactor;
+				w.vel = w.vel*WindMill.KNOTS_TO_METERS;
 				break;
 			case 'K': //km/hr ?
-				w.vel = w.vel*WindMill.KmPerHrToMetersConvFactor;
+				w.vel = w.vel*WindMill.KM_TO_METERS;
 				break;
 			}
 
@@ -404,7 +404,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 
 			//1. Check for for gust
 			if (endTime-Gust.getInstance().getTIMEWINDOW()>= WindMill.appStartTime) {
-				rsAlarms = WindMill.database.QueryMinimumVelInTimePeriod(endTime-Gust.getInstance().getTIMEWINDOW(), endTime);
+				rsAlarms = WindMill.database.queryMinimumVelInTimePeriod(endTime-Gust.getInstance().getTIMEWINDOW(), endTime);
 				//rs is never null because there is always wind data at this point
 				rsAlarms.beforeFirst();
 				if (rsAlarms.next()) {
@@ -427,7 +427,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 
 			//2. Check for Higher
 			if (endTime-Higher.getInstance().getTIMEWINDOW()>= WindMill.appStartTime) {
-				rsAlarms = WindMill.database.QueryAVGRecordsInTimePeriod(endTime-Higher.getInstance().getTIMEWINDOW(), endTime);
+				rsAlarms = WindMill.database.queryAVGRecordsInTimePeriod(endTime-Higher.getInstance().getTIMEWINDOW(), endTime);
 				//rs is never null because there is always wind data at this point
 				rsAlarms.beforeFirst();
 				if (rsAlarms.next()) {
@@ -455,7 +455,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 
 			//3. Check for high
 			if (endTime-High.getInstance().getTIMEWINDOW()>= WindMill.appStartTime) {
-				rsAlarms = WindMill.database.QueryAVGRecordsInTimePeriod(endTime-High.getInstance().getTIMEWINDOW(), endTime);
+				rsAlarms = WindMill.database.queryAVGRecordsInTimePeriod(endTime-High.getInstance().getTIMEWINDOW(), endTime);
 				//if (rs == null) return;
 				rsAlarms.beforeFirst();
 				if (rsAlarms.next()) {
@@ -486,9 +486,10 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 
 	private class WindTimerTask extends TimerTask {
 
-		Anemometer anemometer;
+		private final Anemometer anemometer;
 
-		public WindTimerTask(Anemometer anemometer) {
+		public WindTimerTask(final Anemometer anemometer) {
+			super();
 			this.anemometer = anemometer;
 		}
 

@@ -64,7 +64,7 @@ public class AboutDlg extends JDialog implements ActionListener {
 			contentPanel.add(canvas, gbc_canvas);
 		}
 		{
-			JLabel lblWindmillV = new JLabel("WindMill v"+WindMill.version);
+			JLabel lblWindmillV = new JLabel("WindMill v"+WindMill.VERSION);
 			lblWindmillV.setFont(new Font("Tahoma", Font.BOLD, 11));
 			lblWindmillV.setHorizontalAlignment(SwingConstants.CENTER);
 			GridBagConstraints gbc_lblWindmillV = new GridBagConstraints();

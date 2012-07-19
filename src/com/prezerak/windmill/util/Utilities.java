@@ -14,29 +14,29 @@ import com.prezerak.windmill.main.WindMill;
 
 public class Utilities {
 
-	public static void printSQLException(SQLException e)
+	public static void printSQLException(SQLException exception)
 	{
 		// Unwraps the entire exception chain to unveil the real cause of the
 		// Exception.
-		while (e != null)
+		while (exception != null)
 		{
-			WindMill.logger.warn("\n----- SQLException -----" + "\n"+
-								"  SQL State:  " + e.getSQLState()+"\n"+
-								"  Error Code: " + e.getErrorCode()+"\n"+
-								"  Message:    " + e.getMessage());
+			WindMill.LOGGER.warn("\n----- SQLException -----" + "\n"+
+								"  SQL State:  " + exception.getSQLState()+"\n"+
+								"  Error Code: " + exception.getErrorCode()+"\n"+
+								"  Message:    " + exception.getMessage());
 			// for stack traces, refer to derby.log or uncomment this:
-			WindMill.logger.warn(System.err);
-			e = e.getNextException();
+			WindMill.LOGGER.warn(System.err);
+			exception = exception.getNextException();
 		}
 	}
 
 	public static void reportFailure(String message) {
-		WindMill.logger.warn("\nData verification failed:\n\t" + message);
+		WindMill.LOGGER.warn("\nData verification failed:\n\t" + message);
 	}
 
 
 	public static boolean anotherInstanceExists() {
-		File f = new File(WindMill.appHome+"windmill.lock"); //create a .lock file instance 
+		File f = new File(WindMill.APPHOME+"windmill.lock"); //create a .lock file instance 
 		
 		if (f.exists())
 			return true; //terminate if .lock exists
@@ -45,7 +45,7 @@ public class Utilities {
 				f.createNewFile();//else create it and
 				f.deleteOnExit(); //mark for deletion when the JVM terminates
 			} catch (IOException e) {
-				WindMill.logger.warn("Problem creating windmill.lock file");
+				WindMill.LOGGER.warn("Problem creating windmill.lock file");
 				return true; //if we get an Exception at this point
 							 //we behave as if another instance is running
 			} 
@@ -55,30 +55,31 @@ public class Utilities {
 
 	public static int convertToBeauforts(float velocity) {
 		// TODO Auto-generated method stub
-		velocity = velocity/WindMill.KmPerHrToMetersConvFactor; //convert to km/hr
-		if (velocity < 2)
+		float kmVelocity = velocity/WindMill.KM_TO_METERS; //convert to km/hr;
+
+		if (kmVelocity < 2)
 			return 0;
-		if (velocity < 6)
+		if (kmVelocity < 6)
 			return 1;
-		if (velocity < 13)
+		if (kmVelocity < 13)
 			return 2;
-		if (velocity < 21)
+		if (kmVelocity < 21)
 			return 3;
-		if (velocity < 31)
+		if (kmVelocity < 31)
 			return 4;
-		if (velocity < 41)
+		if (kmVelocity < 41)
 			return 5;
-		if (velocity < 51)
+		if (kmVelocity < 51)
 			return 6;
-		if (velocity < 62)
+		if (kmVelocity < 62)
 			return 7;
-		if (velocity < 75)
+		if (kmVelocity < 75)
 			return 8;
-		if (velocity < 90)
+		if (kmVelocity < 90)
 			return 9;
-		if (velocity < 104)
+		if (kmVelocity < 104)
 			return 10;
-		if (velocity < 120)
+		if (kmVelocity < 120)
 			return 11;
 
 		return 12;
@@ -110,7 +111,7 @@ public class Utilities {
 
 	public static boolean databaseMissing() {
 		// TODO Auto-generated method stub
-		File f = new File(WindMill.databaseHome); 
+		File f = new File(WindMill.DBPATH); 
 		
 		if (f.exists())
 			return false; 	

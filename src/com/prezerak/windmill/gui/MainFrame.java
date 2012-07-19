@@ -17,9 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.Calendar;
 import java.util.Date;
@@ -157,7 +155,7 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		setTitle("WindMill "+WindMill.version);
+		setTitle("WindMill "+WindMill.VERSION);
 		setIconImage(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/com/prezerak/windmill/gui/resources/rotor_icon.gif")));
 		//setSize(new Dimension(1280,800));
 		GridBagLayout gridBagLayout = new GridBagLayout();
@@ -522,10 +520,13 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getActionCommand().equals("Exit")) {
 			wndAdapter.windowClosing(null);
-		} if (evt.getActionCommand().equals("About")) {
+		} 
+		if (evt.getActionCommand().equals("About")) {
 			new AboutDlg(this, true);
+		} else if (evt.getActionCommand().equals("Erase")) {
+			WindMill.database.eraseDB();
 		}
-		else	if (evt.getActionCommand().equals("Options")) {
+		else if (evt.getActionCommand().equals("Options")) {
 			new OptionsDialog();//blocks due to setVisible(true);
 		} else if (evt.getActionCommand().equals("Go")) {
 
@@ -763,16 +764,16 @@ class MainWndAdapter extends WindowAdapter {
 		try {
 			
 				BufferedWriter bWriter = new BufferedWriter(
-					new OutputStreamWriter(new FileOutputStream(WindMill.iniPath)));
+					new OutputStreamWriter(new FileOutputStream(WindMill.INIPATH)));
 			WindMill.propertyFile.store(bWriter, ".ini file");
 			bWriter.close();
 		} catch (Exception e) {
 			JLabel lbl = new JLabel("Failed to save initialization file !!!");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.logger.warn(lbl.getText());
+			WindMill.LOGGER.warn(lbl.getText());
 			JOptionPane.showMessageDialog(null, lbl);
 		}
-		WindMill.logger.info("Application ended at:"+new Date(System.currentTimeMillis()).toString());
+		WindMill.LOGGER.info("Application ended at:"+new Date(System.currentTimeMillis()).toString());
 		System.exit(0);
 	}
 }
