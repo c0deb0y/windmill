@@ -41,16 +41,16 @@ public class WindMill {
 	public static MainFrame mainFrame;
 	public static Anemometer anemometer = null;
 
-	final public static float KNOTS_TO_METERS = 0.51444f;
-	final public static float MILES_TO_METERS = 0.44704f;
-	public static final float KM_TO_METERS = 1000/3600.0f;
+	final public static float KNOTS_TO_METERS_CONV_FACTOR = 0.51444f;
+	final public static float MILES_PER_HR_TO_METERS_CONV_FACTOR = 0.44704f;
+	public static final float KM_PER_HR_TO_METERS_CONV_FACOR = 1000/3600.0f;
 
 	public static long appStartTime;
 	public static Properties propertyFile=null;
 
 	public static final String VERSION = "GitHub";
 
-	public static final Logger LOGGER = Logger.getLogger(WindMill.class);
+	public static final Logger logger = Logger.getLogger(WindMill.class);
 
 	public static WindDB database = null;
 
@@ -72,18 +72,18 @@ public class WindMill {
 		final MySimpleLayout msl = new MySimpleLayout();
 
 		try {
-			LOGGER.addAppender(new RollingFileAppender(msl,LOGGERPATH, true));
+			logger.addAppender(new RollingFileAppender(msl,LOGGERPATH, true));
 		} catch (IOException e) {
-			LOGGER.addAppender(new ConsoleAppender());
+			logger.addAppender(new ConsoleAppender());
 		}
-		LOGGER.setLevel(Level.INFO);
-		LOGGER.debug(APPHOME);
+		logger.setLevel(Level.INFO);
+		logger.debug(APPHOME);
 
 		//First check if the app is already running
 		if (Utilities.anotherInstanceExists()) {
 			final JLabel lbl = new JLabel("Another instance of WindMill is already running...");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			LOGGER.warn(lbl.getText());
+			logger.warn(lbl.getText());
 			JOptionPane.showMessageDialog(null, lbl);
 			System.exit(0);
 		}
@@ -116,13 +116,13 @@ public class WindMill {
 		} catch (FileNotFoundException e) {			
 			final JLabel lbl = new JLabel("Initialization file missing !!!");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			LOGGER.warn(lbl.getText());
+			logger.warn(lbl.getText());
 			JOptionPane.showMessageDialog(null, lbl);
 			initParams();
 		} catch (IOException e) {
 			final JLabel lbl = new JLabel("Problem with initialization !!!");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			LOGGER.warn(lbl.getText());
+			logger.warn(lbl.getText());
 			JOptionPane.showMessageDialog(null, lbl);
 			initParams();
 		} 
@@ -130,7 +130,7 @@ public class WindMill {
 
 		//Log the start time
 		appStartTime = System.currentTimeMillis();
-		LOGGER.info("Application started at:"+new Date(appStartTime).toString());
+		logger.info("Application started at:"+new Date(appStartTime).toString());
 
 		//Show the main window
 		EventQueue.invokeLater(new Runnable() {

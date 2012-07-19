@@ -20,18 +20,18 @@ public class Utilities {
 		// Exception.
 		while (exception != null)
 		{
-			WindMill.LOGGER.warn("\n----- SQLException -----" + "\n"+
+			WindMill.logger.warn("\n----- SQLException -----" + "\n"+
 								"  SQL State:  " + exception.getSQLState()+"\n"+
 								"  Error Code: " + exception.getErrorCode()+"\n"+
 								"  Message:    " + exception.getMessage());
 			// for stack traces, refer to derby.log or uncomment this:
-			WindMill.LOGGER.warn(System.err);
+			WindMill.logger.warn(System.err);
 			exception = exception.getNextException();
 		}
 	}
 
 	public static void reportFailure(String message) {
-		WindMill.LOGGER.warn("\nData verification failed:\n\t" + message);
+		WindMill.logger.warn("\nData verification failed:\n\t" + message);
 	}
 
 
@@ -45,7 +45,7 @@ public class Utilities {
 				f.createNewFile();//else create it and
 				f.deleteOnExit(); //mark for deletion when the JVM terminates
 			} catch (IOException e) {
-				WindMill.LOGGER.warn("Problem creating windmill.lock file");
+				WindMill.logger.warn("Problem creating windmill.lock file");
 				return true; //if we get an Exception at this point
 							 //we behave as if another instance is running
 			} 
@@ -55,7 +55,7 @@ public class Utilities {
 
 	public static int convertToBeauforts(float velocity) {
 		// TODO Auto-generated method stub
-		float kmVelocity = velocity/WindMill.KM_TO_METERS; //convert to km/hr;
+		float kmVelocity = velocity/WindMill.KM_PER_HR_TO_METERS_CONV_FACOR; //convert to km/hr;
 
 		if (kmVelocity < 2)
 			return 0;

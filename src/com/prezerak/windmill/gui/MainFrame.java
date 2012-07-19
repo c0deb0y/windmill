@@ -205,19 +205,19 @@ public class MainFrame extends JFrame implements ActionListener, Observer {
 		mnMenu.add(mntmOptions_1);
 
 
-		mntmAbout = new JMenuItem("About");
-		mntmAbout.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		mntmAbout.setActionCommand("About");
-		mntmAbout.addActionListener(this);
-		mnMenu.add(mntmAbout);
-		
-		
 		mntmErase = new JMenuItem("Erase DB");
 		mntmErase.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		mntmErase.setActionCommand("Erase");
 		mntmErase.addActionListener(this);
 		mnMenu.add(mntmErase);
 
+
+		mntmAbout = new JMenuItem("About");
+		mntmAbout.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		mntmAbout.setActionCommand("About");
+		mntmAbout.addActionListener(this);
+		mnMenu.add(mntmAbout);
+	
 		
 		mntmExit = new JMenuItem("Exit");
 		mntmExit.setActionCommand("Exit");
@@ -770,10 +770,10 @@ class MainWndAdapter extends WindowAdapter {
 		} catch (Exception e) {
 			JLabel lbl = new JLabel("Failed to save initialization file !!!");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.LOGGER.warn(lbl.getText());
+			WindMill.logger.warn(lbl.getText());
 			JOptionPane.showMessageDialog(null, lbl);
 		}
-		WindMill.LOGGER.info("Application ended at:"+new Date(System.currentTimeMillis()).toString());
+		WindMill.logger.info("Application ended at:"+new Date(System.currentTimeMillis()).toString());
 		System.exit(0);
 	}
 }

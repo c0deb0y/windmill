@@ -135,17 +135,17 @@ class RealTimePanel extends JPanel implements Observer{//, ActionListener {
 			sbSpeed = new StringBuffer(String.format("%.2f", velocity));
 			sbSpeed.append(" m/sec");
 		} else if(WindMill.mainFrame.rdbtnKmHr.isSelected()) {
-			velocity=velocity/WindMill.KM_TO_METERS;
+			velocity=velocity/WindMill.KM_PER_HR_TO_METERS_CONV_FACOR;
 			sbSpeed = new StringBuffer(String.format("%.2f", velocity));
 			sbSpeed.append(" km/hr");			
 		}else if (WindMill.mainFrame.rdbtnKnots.isSelected()) {
 			//convert from m/sec to knots
-			velocity=velocity/WindMill.KNOTS_TO_METERS;
+			velocity=velocity/WindMill.KNOTS_TO_METERS_CONV_FACTOR;
 			sbSpeed = new StringBuffer(String.format("%.2f", velocity));
 			sbSpeed.append(" knots");
 		} else if (WindMill.mainFrame.rdbtnMilesHr.isSelected()) {
 			//convert from m/sec to miles / hr
-			velocity=velocity/WindMill.MILES_TO_METERS;
+			velocity=velocity/WindMill.MILES_PER_HR_TO_METERS_CONV_FACTOR;
 			sbSpeed = new StringBuffer(String.format("%.2f", velocity));
 			sbSpeed.append(" miles / hr");
 		} else if (WindMill.mainFrame.rdbtnBft.isSelected()) {

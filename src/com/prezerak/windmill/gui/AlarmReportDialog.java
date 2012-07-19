@@ -167,12 +167,12 @@ public class AlarmReportDialog extends JDialog implements ActionListener , Print
 
 			table.isPrintable(false);		
 		} else if (command.equals("Next")) {
-			boolean enabled = table.Next();
+			boolean enabled = table.next();
 			btnNext.setEnabled(enabled);
 			btnPrevious.setEnabled(true);
 
 		} else if (command.equals("Previous")) {
-			boolean enabled =table.Previous();
+			boolean enabled =table.previous();
 			btnPrevious.setEnabled(enabled);
 			btnNext.setEnabled(true);
 		}

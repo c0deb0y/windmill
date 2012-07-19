@@ -117,7 +117,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 			{
 				JLabel lbl = new JLabel("Error: Port is currently in use");
 				lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-				WindMill.LOGGER.warn(lbl.getText());
+				WindMill.logger.warn(lbl.getText());
 				JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 			}
 			else
@@ -212,43 +212,43 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 					//OutputStream out = serialPort.getOutputStream();
 					//(new Thread(new SerialWriter(out))).start();
 
-					WindMill.LOGGER.info(portName+" connected");
+					WindMill.logger.info(portName+" connected");
 				}
 				else
 				{
-					WindMill.LOGGER.warn("Error: Only serial ports are handled by this app.");
+					WindMill.logger.warn("Error: Only serial ports are handled by this app.");
 				}
 			}   //otherwise shallow some exceptions
 		} catch (NoSuchPortException e) {
 			JLabel lbl = new JLabel(portName+" does not exist");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.LOGGER.warn(lbl.getText());
+			WindMill.logger.warn(lbl.getText());
 			JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 		} catch (PortInUseException e) {			
 			JLabel lbl = new JLabel("Error: Port is currently in use");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.LOGGER.warn(lbl.getText());
+			WindMill.logger.warn(lbl.getText());
 			JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 			//disconnect();
 		} catch(UnsupportedCommOperationException e) {			
 			JLabel lbl = new JLabel("Unsupported "+portName+" parameter");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.LOGGER.warn(lbl.getText());
+			WindMill.logger.warn(lbl.getText());
 			JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 		} catch (TooManyListenersException e) {
 			JLabel lbl = new JLabel("Too many serial listeners");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.LOGGER.warn(lbl.getText());
+			WindMill.logger.warn(lbl.getText());
 			JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 		} catch (IOException e) {
 			JLabel lbl = new JLabel("IO Error");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.LOGGER.warn(lbl.getText());
+			WindMill.logger.warn(lbl.getText());
 			JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 		} catch (Exception e) {
 			JLabel lbl = new JLabel("General Exception");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.LOGGER.warn(lbl.getText());
+			WindMill.logger.warn(lbl.getText());
 			JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 		}
 	}
@@ -267,7 +267,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 
 			serialPort.close();
 		}	
-		WindMill.LOGGER.info("serial port disconnected");
+		WindMill.logger.info("serial port disconnected");
 	}
 
 
@@ -299,10 +299,10 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 			break;
 		case 'N':
 			//convert knots to m / sec
-			w.vel = WindMill.KNOTS_TO_METERS*w.vel;
+			w.vel = WindMill.KNOTS_TO_METERS_CONV_FACTOR*w.vel;
 		case 'K':
 			//convert km /hr to m/sec
-			w.vel = WindMill.KM_TO_METERS*w.vel;
+			w.vel = WindMill.KM_PER_HR_TO_METERS_CONV_FACOR*w.vel;
 		}
 
 		//This way, wind always carries velocity in m/sec
@@ -341,7 +341,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 		{
 			//e.printStackTrace();
 			//System.exit(-1);
-			WindMill.LOGGER.warn("IO exception while reading serial port");
+			WindMill.logger.warn("IO exception while reading serial port");
 		}             
 	}
 
@@ -376,10 +376,10 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 				break;
 
 			case 'N': //knots - TESTED
-				w.vel = w.vel*WindMill.KNOTS_TO_METERS;
+				w.vel = w.vel*WindMill.KNOTS_TO_METERS_CONV_FACTOR;
 				break;
 			case 'K': //km/hr ?
-				w.vel = w.vel*WindMill.KM_TO_METERS;
+				w.vel = w.vel*WindMill.KM_PER_HR_TO_METERS_CONV_FACOR;
 				break;
 			}
 

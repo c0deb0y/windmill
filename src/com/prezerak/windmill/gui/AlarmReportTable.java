@@ -31,7 +31,7 @@ public class AlarmReportTable extends JTable  {
 
 
 
-	boolean Next() {
+	protected boolean next() {
 		if (m.currentPage < m.pages-1) {
 			//System.out.println((m.currentPage++)+"----"+m.pages);
 			m.currentPage++;
@@ -51,7 +51,7 @@ public class AlarmReportTable extends JTable  {
 		}
 	}
 
-	boolean Previous() {
+	protected boolean previous() {
 		if (m.currentPage > 0) {
 			//System.out.println((m.currentPage++)+"----"+m.pages);
 			m.currentPage--;
@@ -98,6 +98,7 @@ public class AlarmReportTable extends JTable  {
 				TimePeriodValues datasetHigh,
 				TimePeriodValues datasetHigher) {
 
+			super();
 			int initialItemCount=0;
 
 			isPrintable=false;
@@ -162,13 +163,13 @@ public class AlarmReportTable extends JTable  {
 						data[i] = new LiveAlarm();
 						switch(alarmType) {
 						case 1: 
-							data[i].type= new String("Gust");
+							data[i].type= "Gust";
 							break;
 						case 2: 
-							data[i].type= new String("High");
+							data[i].type= "High";
 							break;
 						case 3: 
-							data[i].type= new String("Higher");
+							data[i].type= "Higher";
 							break;
 						}
 
@@ -209,10 +210,10 @@ public class AlarmReportTable extends JTable  {
 		private class startTimeComparator implements Comparator <LiveAlarm> {
 
 			@Override
-			public int compare(LiveAlarm o1, LiveAlarm o2) {
+			public int compare(LiveAlarm object1, LiveAlarm object2) {
 				// TODO Auto-generated method stub
-				long start1 = o1.startT;
-				long start2 = o2.startT;
+				long start1 = object1.startT;
+				long start2 = object2.startT;
 				
 				if (start1 < start2) return -1;
 				if (start1 == start2) return 0;
@@ -244,7 +245,7 @@ public class AlarmReportTable extends JTable  {
 
 				data[i] = new LiveAlarm();
 				
-				data[i].type= new String(label);
+				data[i].type= label;
 
 
 				calendar.setTimeInMillis(datasetAlarm.getTimePeriod(index).getStart().getTime());

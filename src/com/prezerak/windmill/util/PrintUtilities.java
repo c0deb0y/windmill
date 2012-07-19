@@ -49,7 +49,7 @@ public class PrintUtilities implements Printable {
       } catch(PrinterException pe) {
 			JLabel lbl = new JLabel("Problem with printing !!!");
 			lbl.setFont(new Font("Tahoma", Font.BOLD, 11));
-			WindMill.LOGGER.warn(pe);
+			WindMill.logger.warn(pe);
 			JOptionPane.showMessageDialog(WindMill.mainFrame, lbl);
 
       }

@@ -28,7 +28,7 @@ public class ReportTable extends JTable  {
 
 
 
-	boolean Next() {
+	boolean next() {
 		if (m.currentPage < m.pages-1) {
 			m.currentPage++;
 		}
@@ -46,7 +46,7 @@ public class ReportTable extends JTable  {
 		}
 	}
 
-	boolean Previous() {
+	boolean previous() {
 		if (m.currentPage > 0) {
 			//System.out.println((m.currentPage++)+"----"+m.pages);
 			m.currentPage--;

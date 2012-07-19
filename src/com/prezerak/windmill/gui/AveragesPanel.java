@@ -635,7 +635,7 @@ public class AveragesPanel extends JPanel implements ActionListener, ItemListene
 				highRenderer.setSeriesVisible(0, false);
 
 		} catch (OutOfMemoryError e) {
-			WindMill.LOGGER.warn("Out of Memory in plotEverything");
+			WindMill.logger.warn("Out of Memory in plotEverything");
 		}
 
 	}
@@ -648,15 +648,15 @@ public class AveragesPanel extends JPanel implements ActionListener, ItemListene
 			conversionFactor=1.0f;
 			maxY=50.0f;
 		} else if (WindMill.mainFrame.rdbtnKmHr.isSelected()) {
-			conversionFactor=1/WindMill.KM_TO_METERS;
+			conversionFactor=1/WindMill.KM_PER_HR_TO_METERS_CONV_FACOR;
 			maxY=150.0f;
 		}
 		else if (WindMill.mainFrame.rdbtnMilesHr.isSelected()) {
-			conversionFactor= 1/WindMill.MILES_TO_METERS;
+			conversionFactor= 1/WindMill.MILES_PER_HR_TO_METERS_CONV_FACTOR;
 			maxY=150.0f;
 		}
 		else if (WindMill.mainFrame.rdbtnKnots.isSelected()) {
-			conversionFactor=1/WindMill.KNOTS_TO_METERS;;
+			conversionFactor=1/WindMill.KNOTS_TO_METERS_CONV_FACTOR;;
 			maxY=150.0f;
 		}
 		else if (WindMill.mainFrame.rdbtnBft.isSelected()) {

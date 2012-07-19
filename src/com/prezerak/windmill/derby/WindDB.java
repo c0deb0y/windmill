@@ -104,7 +104,7 @@ public class WindDB  {
 					+ ";create=true;dataEncryption=true;bootPassword="+bootpasswd, props);
 
 			//System.out.println("Connected to and created database " + dbName);
-			WindMill.LOGGER.debug("Connected to and created database " + dbName);
+			WindMill.logger.debug("Connected to and created database " + dbName);
 
 			// We want to control transactions manually. Autocommit is on by
 			// default in JDBC.
@@ -151,16 +151,16 @@ public class WindDB  {
 			s.execute("create table wind_data(vel FLOAT, dir FLOAT, timeMills BIGINT, reference CHAR, gust BOOLEAN, high BOOLEAN, higher BOOLEAN)");            
 			s.execute("CREATE UNIQUE INDEX time ON wind_data (timeMills ASC)");
 			//System.out.println("Created table wind_data");
-			WindMill.LOGGER.info("Created table wind_data");
+			WindMill.logger.info("Created table wind_data");
 			conn.commit();
-			WindMill.LOGGER.info("Committed the transaction");
+			WindMill.logger.info("Committed the transaction");
 			s.execute("create table alarms(type SMALLINT, startTime BIGINT, endTime BIGINT)");
 			s.execute("CREATE INDEX time2 ON alarms(startTime, endTime ASC)");
 			//System.out.println("Created table alarms");
-			WindMill.LOGGER.info("Created table alarms");
+			WindMill.logger.info("Created table alarms");
 			conn.commit();
 			//System.out.println("Committed the transaction");
-			WindMill.LOGGER.info("Committed the transaction");
+			WindMill.logger.info("Committed the transaction");
 
 			/*
 			 * In embedded mode, an application should shut down the database.
@@ -196,13 +196,13 @@ public class WindDB  {
 				if (( (se.getErrorCode() == 50000)
 						&& ("XJ015".equals(se.getSQLState()) ))) {
 					// we got the expected exception
-					WindMill.LOGGER.info("Derby shut down normally");
+					WindMill.logger.info("Derby shut down normally");
 					// Note that for single database shutdown, the expected
 					// SQL state is "08006", and the error code is 45000.
 				} else {
 					// if the error code or SQLState is different, we have
 					// an unexpected exception (shutdown failed)
-					WindMill.LOGGER.info("Derby did not shut down normally");
+					WindMill.logger.info("Derby did not shut down normally");
 					Utilities.printSQLException(se);
 				}
 			}
@@ -272,7 +272,7 @@ public class WindDB  {
 		conn = DriverManager.getConnection(connPriorities.toString(), props);
 		//here we might get an exception because the db does not exist
 		//we should handle this otherwise the program freezes
-		WindMill.LOGGER.info("Connected to database " + dbName);
+		WindMill.logger.info("Connected to database " + dbName);
 
 		// We want to control transactions manually. Autocommit is on by
 		// default in JDBC.
@@ -303,13 +303,13 @@ public void terminateDB() {
 		if (( (se.getErrorCode() == 50000)
 				&& ("XJ015".equals(se.getSQLState()) ))) {
 			// we got the expected exception
-			WindMill.LOGGER.info("Derby shut down normally");
+			WindMill.logger.info("Derby shut down normally");
 			// Note that for single database shutdown, the expected
 			// SQL state is "08006", and the error code is 45000.
 		} else {
 			// if the error code or SQLState is different, we have
 			// an unexpected exception (shutdown failed)
-			WindMill.LOGGER.warn("Derby did not shut down normally");
+			WindMill.logger.warn("Derby did not shut down normally");
 			Utilities.printSQLException(se);
 		}
 	} finally {
@@ -365,7 +365,7 @@ public void terminateDB() {
 			Utilities.printSQLException(sqle);
 		}
 	}
-	WindMill.LOGGER.info("Database connection terminated");
+	WindMill.logger.info("Database connection terminated");
 }
 
 
