@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import org.apache.log4j.ConsoleAppender;
 import org.apache.log4j.Level;
@@ -65,7 +66,7 @@ public class WindMill {
 		Locale.setDefault(Locale.ENGLISH);
 
 		//Always use GMT
-		SimpleTimeZone.setDefault(SimpleTimeZone.getTimeZone("Europe/London"));
+		TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
 
 		//set the logger level programmatically		
 
@@ -134,6 +135,7 @@ public class WindMill {
 
 		//Show the main window
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				mainFrame = new MainFrame();
 			}

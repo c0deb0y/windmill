@@ -9,6 +9,7 @@ import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import com.prezerak.windmill.main.WindMill;
 
@@ -87,7 +88,7 @@ public class Utilities {
 
 	
 	public static String createDateString(long startDate, long endDate) {
-		GregorianCalendar cal = (GregorianCalendar) Calendar.getInstance(SimpleTimeZone.getDefault());
+		GregorianCalendar cal = (GregorianCalendar) Calendar.getInstance(TimeZone.getDefault());
 		
 		StringBuffer dateLine = new StringBuffer(50);
 		Formatter formatter = new Formatter(dateLine, Locale.ENGLISH);

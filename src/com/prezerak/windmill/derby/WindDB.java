@@ -228,7 +228,7 @@ public class WindDB  {
 			int stmnt_index = 0;
 			while (!statements.isEmpty()) {
 				// PreparedStatement extend Statement
-				Statement st = (Statement)statements.remove(stmnt_index);
+				Statement st = statements.remove(stmnt_index);
 				try {
 					if (st != null) {
 						st.close();

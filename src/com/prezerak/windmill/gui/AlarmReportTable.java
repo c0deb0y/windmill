@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -142,7 +143,7 @@ public class AlarmReportTable extends JTable  {
 
 				data = new LiveAlarm[itemCount];
 
-				GregorianCalendar calendar = (GregorianCalendar) new GregorianCalendar(SimpleTimeZone.getTimeZone("Europe/London"));
+				GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("Europe/London"));
 
 
 				StringBuffer startBuffer =new StringBuffer();
@@ -231,7 +232,7 @@ public class AlarmReportTable extends JTable  {
 			int end = start+datasetAlarm.getItemCount();
 			int index = 0;
 
-			GregorianCalendar calendar = (GregorianCalendar) new GregorianCalendar(SimpleTimeZone.getTimeZone("Europe/London"));
+			GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("Europe/London"));
 
 
 			StringBuffer startBuffer =new StringBuffer();
@@ -262,10 +263,12 @@ public class AlarmReportTable extends JTable  {
 			return end;
 		}
 
+		@Override
 		public int getColumnCount() {
 			return columnNames.length;
 		}
 
+		@Override
 		public int getRowCount() {
 			if (isPrintable) {
 				//System.out.println("data:"+data.length);
@@ -275,10 +278,12 @@ public class AlarmReportTable extends JTable  {
 				return pageLength;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 
 			Object o = null;
@@ -287,13 +292,13 @@ public class AlarmReportTable extends JTable  {
 				if (!isPrintable) row = (int)(currentPage*60)+row;								
 				switch(col) {
 				case 0:
-					o = (Object) data[row].type;
+					o = data[row].type;
 					break;
 				case 1:
-					o = (Object) data[row].start;
+					o = data[row].start;
 					break;
 				case 2:
-					o = (Object) data[row].end;
+					o = data[row].end;
 					break;
 				}			
 			}
@@ -301,6 +306,7 @@ public class AlarmReportTable extends JTable  {
 			return o;
 		}
 
+		@Override
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public Class getColumnClass(int c) {
 			return data[0].type.getClass();

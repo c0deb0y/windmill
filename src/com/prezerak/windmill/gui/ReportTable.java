@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.SimpleTimeZone;
+import java.util.TimeZone;
 
 
 import javax.swing.JTable;
@@ -101,7 +102,7 @@ public class ReportTable extends JTable  {
 			
 			pages = itemCount / 60.0f;						
 			if (pages < 1) 
-				pageLength = (int) itemCount;
+				pageLength = itemCount;
 			else
 				pageLength=60;
 
@@ -111,7 +112,7 @@ public class ReportTable extends JTable  {
 				columnCount=3;
 
 			data = new Object[itemCount][columnCount];
-			GregorianCalendar calendar = (GregorianCalendar) new GregorianCalendar(SimpleTimeZone.getTimeZone("Europe/London"));
+			GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("Europe/London"));
 
 			StringBuffer sb =new StringBuffer();
 			Formatter formatter = new Formatter(sb);
@@ -179,11 +180,13 @@ public class ReportTable extends JTable  {
 
 		}
 
+		@Override
 		public int getColumnCount() {
 			//return columnNames.length;
 			return columnCount;
 		}
 
+		@Override
 		public int getRowCount() {
 			if (isPrintable) {
 				//System.out.println("data:"+data.length);
@@ -193,10 +196,12 @@ public class ReportTable extends JTable  {
 				return pageLength;
 		}
 
+		@Override
 		public String getColumnName(int col) {
 			return columnNames[col];
 		}
 
+		@Override
 		public Object getValueAt(int row, int col) {
 			if (data !=null) {
 				if (isPrintable) {								
@@ -209,6 +214,7 @@ public class ReportTable extends JTable  {
 				return null;
 		}
 
+		@Override
 		@SuppressWarnings({ "rawtypes", "unchecked" })
 		public Class getColumnClass(int c) {
 			return data[0][c].getClass();

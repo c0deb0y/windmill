@@ -118,6 +118,7 @@ class RealTimePanel extends JPanel implements Observer{//, ActionListener {
 
 	}
 	
+	@Override
 	public synchronized void update(Observable model, Object arg) {
 		Anemometer anemometer = (Anemometer) model; 	// the wind model always carries the
 		

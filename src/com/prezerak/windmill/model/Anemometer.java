@@ -313,6 +313,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 	}
 
 	//User only in REAL_MODE
+	@Override
 	public synchronized void serialEvent(SerialPortEvent arg0) {
 		int data;
 
@@ -494,6 +495,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 		}
 
 		//User only in TIMER_MODE
+		@Override
 		public void run() {
 			anemometer.poll();
 		}

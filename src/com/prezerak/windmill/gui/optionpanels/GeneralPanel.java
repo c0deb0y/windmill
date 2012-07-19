@@ -40,6 +40,7 @@ public class GeneralPanel extends OptionPanel {
 	}
 
 
+	@Override
 	public void updateProperties() {
 		String [] properties = {"SHIP"};
 		String [] selections = {textFieldShipName.getText()};

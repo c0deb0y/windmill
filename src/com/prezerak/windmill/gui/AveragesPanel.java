@@ -676,6 +676,7 @@ public class AveragesPanel extends JPanel implements ActionListener, ItemListene
 
 
 
+	@Override
 	public void actionPerformed(ActionEvent evt) {
 		if (evt.getActionCommand().equals("Print Graph")) {
 			PrintUtilities.printComponent(chartPanel);
@@ -702,6 +703,7 @@ public class AveragesPanel extends JPanel implements ActionListener, ItemListene
 		}
 	}
 
+	@Override
 	public void itemStateChanged(ItemEvent evt) {
 		plotEverything();
 	}
@@ -774,6 +776,7 @@ public class AveragesPanel extends JPanel implements ActionListener, ItemListene
 			super(cf);
 		}
 
+		@Override
 		protected float getValue() {
 			return conversionFactor*valueInMeters;
 		}
@@ -785,6 +788,7 @@ public class AveragesPanel extends JPanel implements ActionListener, ItemListene
 			super(cf);
 		}
 
+		@Override
 		protected float getValue() {
 			return Utilities.convertToBeauforts(valueInMeters);
 		}

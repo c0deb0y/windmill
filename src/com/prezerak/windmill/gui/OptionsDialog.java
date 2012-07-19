@@ -12,6 +12,8 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
+
 import com.prezerak.windmill.gui.optionpanels.AlarmPanel;
 import com.prezerak.windmill.gui.optionpanels.OptionPanel;
 import com.prezerak.windmill.gui.optionpanels.SerialPanel;
@@ -103,7 +105,7 @@ public class OptionsDialog extends JDialog implements ActionListener {
 
 			JTabbedPane tabbedPane = new JTabbedPane();
 			tabbedPane.setFont(fn);
-			tabbedPane.setTabPlacement(JTabbedPane.TOP);
+			tabbedPane.setTabPlacement(SwingConstants.TOP);
 
 
 			genPanel = new GeneralPanel();
@@ -131,7 +133,7 @@ public class OptionsDialog extends JDialog implements ActionListener {
 		protected JComponent makeTextPanel(String text) {
 			JPanel panel = new JPanel(false);
 			JLabel filler = new JLabel(text);
-			filler.setHorizontalAlignment(JLabel.CENTER);
+			filler.setHorizontalAlignment(SwingConstants.CENTER);
 			panel.setLayout(new GridLayout(1, 1));
 			panel.add(filler);
 			return panel;

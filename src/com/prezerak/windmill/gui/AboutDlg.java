@@ -8,6 +8,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -40,7 +41,7 @@ public class AboutDlg extends JDialog implements ActionListener {
 	public AboutDlg(JFrame owner, boolean modal) {
 		super(owner, modal);
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("About");
 		setBounds(100, 100, 306, 265);
 		getContentPane().setLayout(new BorderLayout());

@@ -139,6 +139,7 @@ public class SerialPanel extends OptionPanel {
 
 	}
 	
+	@Override
 	public void updateProperties() {
 		String [] properties = {"PORT", "BAUD", "DATABITS", "STOPBITS", "PARITY"};
 		String [] selections = {choiceComPorts.getSelectedItem(),

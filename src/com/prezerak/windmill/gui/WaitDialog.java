@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
@@ -27,7 +28,7 @@ public class WaitDialog extends JDialog {
 	public WaitDialog() {
 		super(WindMill.mainFrame, "Info", true);
 		setResizable(false);
-		setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		
 		setBounds(100, 100, 299, 204);
 		getContentPane().setLayout(new BorderLayout(0, 0));

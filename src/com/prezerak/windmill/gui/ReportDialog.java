@@ -13,6 +13,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
@@ -81,7 +83,7 @@ public class ReportDialog extends JDialog implements ActionListener , Printable,
 		table.setFont(new Font("Tahoma", Font.PLAIN, 11));
 
 		DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
-		cellRenderer.setHorizontalAlignment(JLabel.RIGHT);		
+		cellRenderer.setHorizontalAlignment(SwingConstants.RIGHT);		
 		for (int i=0; i < table.getColumnCount();i++)
 			table.getColumnModel().getColumn(i).setCellRenderer(cellRenderer);
 
@@ -130,7 +132,7 @@ public class ReportDialog extends JDialog implements ActionListener , Printable,
 		waitDlg.removeAll();
 		waitDlg.dispose();
 		
-		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		RefineryUtilities.centerDialogInParent(this);
 		setVisible(true);
 		table.removeAll();
@@ -173,6 +175,7 @@ public class ReportDialog extends JDialog implements ActionListener , Printable,
 
 
 
+	@Override
 	public int print(Graphics pg, PageFormat pageFormat,
 			int pageIndex) throws PrinterException {
 
