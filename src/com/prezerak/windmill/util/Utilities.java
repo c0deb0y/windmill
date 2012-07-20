@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.Formatter;
 import java.util.GregorianCalendar;
 import java.util.Locale;
-import java.util.SimpleTimeZone;
 import java.util.TimeZone;
 
 import com.prezerak.windmill.main.WindMill;
