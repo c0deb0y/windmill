@@ -43,7 +43,7 @@ public class WindMill {
 
 	final public static float KNOTS_TO_METERS_CONV_FACTOR = 0.51444f;
 	final public static float MILES_PER_HR_TO_METERS_CONV_FACTOR = 0.44704f;
-	public static final float KM_PER_HR_TO_METERS_CONV_FACOR = 1000/3600.0f;
+	public static final float KM_PER_HR_TO_METERS_CONV_FACTOR = 1000/3600.0f;
 
 	public static long appStartTime;
 	public static Properties propertyFile=null;
@@ -59,7 +59,7 @@ public class WindMill {
 	 */
 
 
-	public static void main(final String[] args) {
+	public static void main(String[] args) {
 
 		//Set ENGLISH locale so that time/date uses this format
 		Locale.setDefault(Locale.ENGLISH);

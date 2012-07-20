@@ -8,7 +8,7 @@ import org.apache.log4j.spi.LoggingEvent;
 public class MySimpleLayout extends SimpleLayout {
 
 	@Override
-	public String format(final LoggingEvent arg0) {
+	public String format(LoggingEvent arg0) {
 		// TODO Auto-generated method stub
 		
 		StringBuffer sb = new StringBuffer();

@@ -117,7 +117,7 @@ class RealTimePanel extends JPanel implements Observer{//, ActionListener {
 			sbSpeed = new StringBuffer(String.format("%.2f", velocity));
 			sbSpeed.append(" m/sec");
 		} else if(WindMill.mainFrame.rdbtnKmHr.isSelected()) {
-			velocity=velocity/WindMill.KM_PER_HR_TO_METERS_CONV_FACOR;
+			velocity=velocity/WindMill.KM_PER_HR_TO_METERS_CONV_FACTOR;
 			sbSpeed = new StringBuffer(String.format("%.2f", velocity));
 			sbSpeed.append(" km/hr");			
 		}else if (WindMill.mainFrame.rdbtnKnots.isSelected()) {
@@ -148,7 +148,7 @@ class RealTimePanel extends JPanel implements Observer{//, ActionListener {
 	}
 
 
-	private JFreeChart createChart(final ValueDataset dataset) {
+	private JFreeChart createChart(ValueDataset dataset) {
         
         final CompassPlot plot = new CompassPlot(dataset);
         plot.setSeriesNeedle(7);

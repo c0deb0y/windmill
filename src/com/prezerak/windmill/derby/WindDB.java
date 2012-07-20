@@ -369,7 +369,7 @@ public void terminateDB() {
 }
 
 
-public void writeWind(final Anemometer anemometer) {
+public void writeWind(Anemometer anemometer) {
 
 	Wind w =  anemometer.getW();
 
@@ -391,7 +391,7 @@ public void writeWind(final Anemometer anemometer) {
 	}
 }
 
-public ResultSet queryAllAlarms(final long startTime, final long endTime) {
+public ResultSet queryAllAlarms(long startTime, long endTime) {
 
 	ResultSet rs = null;
 
@@ -422,7 +422,7 @@ public ResultSet queryAlarm(short alarmCode, long startTime, long endTime) {
 	return rs;
 }
 
-public void writeAlarm(final short alarmCode, final long startTime, final long endTime) {
+public void writeAlarm(short alarmCode, long startTime, long endTime) {
 
 	try {  
 		psInsertAlarm.setShort(1, alarmCode);
@@ -437,7 +437,7 @@ public void writeAlarm(final short alarmCode, final long startTime, final long e
 }
 
 
-public ResultSet queryRecordsInTimePeriod(final long startTime, final long endTime) {
+public ResultSet queryRecordsInTimePeriod(long startTime, long endTime) {
 
 	ResultSet rs = null;
 
@@ -452,7 +452,7 @@ public ResultSet queryRecordsInTimePeriod(final long startTime, final long endTi
 }
 
 
-public ResultSet queryAVGRecordsInTimePeriod(final long startTime, final long endTime) {
+public ResultSet queryAVGRecordsInTimePeriod(long startTime, long endTime) {
 
 	ResultSet rs = null;
 
@@ -466,7 +466,7 @@ public ResultSet queryAVGRecordsInTimePeriod(final long startTime, final long en
 	return rs;
 }
 
-public ResultSet queryMinimumVelInTimePeriod(final long startTime, final long endTime) {
+public ResultSet queryMinimumVelInTimePeriod(long startTime, long endTime) {
 
 	ResultSet rs = null;
 

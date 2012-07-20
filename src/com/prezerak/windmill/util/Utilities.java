@@ -56,31 +56,31 @@ public class Utilities {
 
 	public static int convertToBeauforts(float velocity) {
 		// TODO Auto-generated method stub
-		float kmVelocity = velocity/WindMill.KM_PER_HR_TO_METERS_CONV_FACOR; //convert to km/hr;
+		velocity = velocity/WindMill.KM_PER_HR_TO_METERS_CONV_FACTOR; //convert to km/hr;
 
-		if (kmVelocity < 2)
+		if (velocity < 2)
 			return 0;
-		if (kmVelocity < 6)
+		if (velocity < 6)
 			return 1;
-		if (kmVelocity < 13)
+		if (velocity < 13)
 			return 2;
-		if (kmVelocity < 21)
+		if (velocity < 21)
 			return 3;
-		if (kmVelocity < 31)
+		if (velocity < 31)
 			return 4;
-		if (kmVelocity < 41)
+		if (velocity < 41)
 			return 5;
-		if (kmVelocity < 51)
+		if (velocity < 51)
 			return 6;
-		if (kmVelocity < 62)
+		if (velocity < 62)
 			return 7;
-		if (kmVelocity < 75)
+		if (velocity < 75)
 			return 8;
-		if (kmVelocity < 90)
+		if (velocity < 90)
 			return 9;
-		if (kmVelocity < 104)
+		if (velocity < 104)
 			return 10;
-		if (kmVelocity < 120)
+		if (velocity < 120)
 			return 11;
 
 		return 12;

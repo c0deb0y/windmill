@@ -290,7 +290,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 			w.vel = WindMill.KNOTS_TO_METERS_CONV_FACTOR*w.vel;
 		case 'K':
 			//convert km /hr to m/sec
-			w.vel = WindMill.KM_PER_HR_TO_METERS_CONV_FACOR*w.vel;
+			w.vel = WindMill.KM_PER_HR_TO_METERS_CONV_FACTOR*w.vel;
 		}
 
 		//This way, wind always carries velocity in m/sec
@@ -357,7 +357,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 			w.vel = w.vel*WindMill.KNOTS_TO_METERS_CONV_FACTOR;
 			break;
 		case 'K': //km/hr ?
-			w.vel = w.vel*WindMill.KM_PER_HR_TO_METERS_CONV_FACOR;
+			w.vel = w.vel*WindMill.KM_PER_HR_TO_METERS_CONV_FACTOR;
 			break;
 		}
 
@@ -466,7 +466,7 @@ public class Anemometer extends Observable implements SerialPortEventListener {
 
 		private final Anemometer anemometer;
 
-		public WindTimerTask(final Anemometer anemometer) {
+		public WindTimerTask(Anemometer anemometer) {
 			super();
 			this.anemometer = anemometer;
 		}

@@ -648,7 +648,7 @@ public class AveragesPanel extends JPanel implements ActionListener, ItemListene
 			conversionFactor=1.0f;
 			maxY=50.0f;
 		} else if (WindMill.mainFrame.rdbtnKmHr.isSelected()) {
-			conversionFactor=1/WindMill.KM_PER_HR_TO_METERS_CONV_FACOR;
+			conversionFactor=1/WindMill.KM_PER_HR_TO_METERS_CONV_FACTOR;
 			maxY=150.0f;
 		}
 		else if (WindMill.mainFrame.rdbtnMilesHr.isSelected()) {
