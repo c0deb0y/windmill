@@ -1,10 +1,9 @@
 1. INSTALLATION
 ----------------
-The WindMill app has been stored as an Eclipse project (v. INDIGO).
+The WindMill app has been stored as an Eclipse Java project (v. INDIGO).
 One shoud be able to import it in Eclipse with no problems.
 It has been tested with JSE v6 but since it doesn't do something special, higher JRE versions should be OK.
 
-If you are not interested in the source, run the .jar instead.
 
 
 2. SCOPE
@@ -91,7 +90,7 @@ Apache Derby (some old version back from 2010)
 RxTx (CloudHopper version)
 JGoodies Forms framework (1.3.0)
 JCalendar Java date chooser bean (1.3.3) by Kai Toedter 
-JFreeChart (1.0.13) by by David Gilbert
+JFreeChart (1.0.13) by David Gilbert
 Log4j(1.2.16)
 
 My thanks to all who contributed to the code above.
