@@ -2,7 +2,7 @@
 ----------------
 The WindMill app has been stored as an Eclipse Java project (v. INDIGO).
 One shoud be able to import it in Eclipse with no problems.
-It has been tested with JSE v6 but since it doesn't do something special, higher JRE versions should be OK.
+It has been tested with JSE v6 but since it doesn't do something version specific, higher JRE versions should be OK.
 
 
 
